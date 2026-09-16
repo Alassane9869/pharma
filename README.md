@@ -1,8 +1,8 @@
 <div align="center">
 
-  <img src="pharmacie-gestion/assets/images/logo.png" alt="Pharmacie Natinin Logo" width="120" style="border-radius: 50%; box-shadow: 0 8px 25px rgba(0,0,0,0.2);">
+  <img src="pharmacie-gestion/assets/images/logo.png" alt="Pharmacie Souley-Guirou Logo" width="120" style="border-radius: 50%; box-shadow: 0 8px 25px rgba(0,0,0,0.2);">
 
-  # 🏥 Pharmacie Natinin Pro v1.0
+  # 🏥 Pharmacie Souley-Guirou Pro v1.0
   ### *Système Exécutif de Gestion de Pharmacie, Caisse POS & CRM Client*
 
   [![PHP Version](https://img.shields.io/badge/PHP-8.0%20%7C%208.1%20%7C%208.2%20%7C%208.3-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
@@ -22,13 +22,13 @@
 
 ## 🌟 Aperçu du Projet
 
-**Pharmacie Natinin Pro** est une application web moderne de gestion d'officine pharmaceutique conçue pour offrir une expérience fluide, hautement performante et visuellement élégante. 
+**Pharmacie Souley-Guirou Pro** est une application web moderne de gestion d'officine pharmaceutique conçue pour offrir une expérience fluide, hautement performante et visuellement élégante. 
 
 Grâce à son architecture **Zero-Config basée sur SQLite 3**, l'application fonctionne immédiatement sans nécessiter d'installation complexe de serveur MySQL.
 
 ```
                     ┌─────────────────────────────────────────┐
-                    │          PHARMACIE NATININ PRO          │
+                    │      PHARMACIE SOULEY-GUIROU PRO        │
                     └────────────────────┬────────────────────┘
                                          │
          ┌───────────────────────────────┼───────────────────────────────┐
@@ -167,11 +167,11 @@ kadi projet/
 ## 📄 Licence & Crédits
 
 Ce projet est sous licence **MIT**.  
-Développé avec ❤️ pour la **Pharmacie Natinin**.
+Développé avec ❤️ pour la **Pharmacie Souley-Guirou**.
 
 ---
 
 <div align="center">
-  <b>Pharmacie Natinin Pro v1.0 &bull; 2026</b><br>
+  <b>Pharmacie Souley-Guirou Pro v1.0 &bull; 2026</b><br>
   <sub>Propulsé par PHP & SQLite 3</sub>
 </div>

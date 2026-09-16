@@ -3,7 +3,7 @@ require_once 'includes/config.php';
 requireLogin();
 
 // Définir le titre de la page
-$page_title = 'Tableau de Bord Exécutif - Pharmacie Natinin';
+$page_title = 'Tableau de Bord Exécutif - Pharmacie Souley-Guirou';
 $include_chart = true;
 
 $conn = getConnection();
@@ -209,7 +209,7 @@ require_once 'includes/header.php';
 <div class="dash-hero d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div>
         <span class="badge bg-white text-success fw-bold px-3 py-1 rounded-pill mb-2">
-            <i class="fas fa-check-circle me-1"></i> Pharmacie Natinin v1.0 Pro
+            <i class="fas fa-check-circle me-1"></i> Pharmacie Souley-Guirou v1.0 Pro
         </span>
         <h2 class="fw-extrabold mb-1" style="font-size: 24px;">
             Aperçu Analytique Global 📊

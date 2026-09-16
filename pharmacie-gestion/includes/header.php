@@ -13,7 +13,7 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $page_title ?? 'Pharmacie Natinin' ?></title>
+    <title><?= $page_title ?? 'Pharmacie Souley-Guirou' ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <?php if (isset($include_chart) && $include_chart): ?>
@@ -1553,8 +1553,8 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
 <div class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <a href="<?= $root_path ?>index.php" class="logo-container">
-            <img src="<?= $root_path ?>assets/images/logo.png" alt="Pharmacie Natinin">
-            <div class="brand-name"><i class="fas fa-heartbeat"></i>Pharmacie Natinin</div>
+            <img src="<?= $root_path ?>assets/images/logo.png" alt="Pharmacie Souley-Guirou">
+            <div class="brand-name"><i class="fas fa-heartbeat"></i>Pharmacie Souley-Guirou</div>
             <div class="brand-sub">Système de Gestion Intégré</div>
         </a>
     </div>

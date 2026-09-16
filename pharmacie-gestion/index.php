@@ -8,7 +8,7 @@ if (!isLoggedIn()) {
 }
 
 // Définir le titre de la page
-$page_title = 'Tableau de Bord - Pharmacie Natinin';
+$page_title = 'Tableau de Bord - Pharmacie Souley-Guirou';
 $include_chart = true;
 
 $conn = getConnection();
@@ -229,7 +229,7 @@ require_once 'includes/header.php';
             <i class="fas fa-prescription-bottle-alt me-2 text-success"></i>Tableau de Bord
         </h4>
         <span class="text-muted small">
-            <i class="far fa-clock me-1"></i> Synchronisé à <?= date('H:i') ?> &bull; Pharmacie Natinin
+            <i class="far fa-clock me-1"></i> Synchronisé à <?= date('H:i') ?> &bull; Pharmacie Souley-Guirou
         </span>    
     </div>
     <div class="d-flex align-items-center gap-2">

@@ -39,7 +39,7 @@ $invoiceNumber = "FAC-" . date('Y', strtotime($vente['date_vente'])) . "-" . str
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $invoiceNumber ?> - Pharmacie Natinin</title>
+    <title><?= $invoiceNumber ?> - Pharmacie Souley-Guirou</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -430,13 +430,13 @@ $invoiceNumber = "FAC-" . date('Y', strtotime($vente['date_vente'])) . "-" . str
         <!-- EN-TÊTE FACTURE -->
         <div class="brand-header">
             <div class="brand-logo-group">
-                <img src="../assets/images/logo.png" alt="Pharmacie Natinin" class="pharmacy-logo" onerror="this.src='../assets/images/logos.png'">
+                <img src="../assets/images/logo.png" alt="Pharmacie Souley-Guirou" class="pharmacy-logo" onerror="this.src='../assets/images/logos.png'">
                 <div>
-                    <h1 class="pharmacy-name">PHARMACIE NATININ</h1>
+                    <h1 class="pharmacy-name">PHARMACIE SOULEY-GUIROU</h1>
                     <div class="pharmacy-sub">Officine de Pharmacie & Parapharmacie</div>
                     <div class="pharmacy-meta">
                         <i class="fas fa-map-marker-alt text-success me-1"></i> Avenue Principale, Dakar, Sénégal<br>
-                        <i class="fas fa-phone text-success me-1"></i> +221 33 821 00 00 &bull; <i class="fas fa-envelope text-success me-1"></i> contact@pharmacie-natinin.sn<br>
+                        <i class="fas fa-phone text-success me-1"></i> +221 33 821 00 00 &bull; <i class="fas fa-envelope text-success me-1"></i> contact@pharmacie-souley-guirou.sn<br>
                         <span class="fw-bold">N° Agrément :</span> PH-2024-8891 &bull; <span class="fw-bold">NINEA :</span> 004928102
                     </div>
                 </div>
@@ -554,7 +554,7 @@ $invoiceNumber = "FAC-" . date('Y', strtotime($vente['date_vente'])) . "-" . str
     <!-- PIED DE PAGE ET BARCODE -->
     <div class="invoice-footer">
         <div>
-            <strong>Pharmacie Natinin</strong> &bull; Document officiel certifié conforme &bull; Page 1/1
+            <strong>Pharmacie Souley-Guirou</strong> &bull; Document officiel certifié conforme &bull; Page 1/1
         </div>
         <div class="d-flex align-items-center gap-2">
             <div class="fake-barcode">

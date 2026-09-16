@@ -95,11 +95,11 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     <!-- EN-TÊTE DU DOCUMENT -->
     <div class="row align-items-center mb-4 pb-3 border-bottom">
         <div class="col-7 d-flex align-items-center gap-3">
-            <img src="../assets/images/logo.png" alt="Pharmacie Natinin" class="header-logo" onerror="this.style.display='none'">
+            <img src="../assets/images/logo.png" alt="Pharmacie Souley-Guirou" class="header-logo" onerror="this.style.display='none'">
             <div>
-                <h3 class="doc-title mb-1"><i class="fas fa-heartbeat text-success"></i> PHARMACIE NATININ</h3>
+                <h3 class="doc-title mb-1"><i class="fas fa-heartbeat text-success"></i> PHARMACIE SOULEY-GUIROU</h3>
                 <p class="text-muted small mb-0">Système Officiel de Gestion & Documents Officiels</p>
-                <p class="text-muted small mb-0">Tél: +221 33 821 00 00 &bull; Email: direction@pharmacie-natinin.com</p>
+                <p class="text-muted small mb-0">Tél: +221 33 821 00 00 &bull; Email: direction@pharmacie-souley-guirou.com</p>
             </div>
         </div>
         <div class="col-5 text-end">
@@ -222,7 +222,7 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
                     <h6 class="fw-bold text-info mb-2"><i class="fas fa-file-alt me-1"></i> DÉTAILS COMMANDE</h6>
                     <div>Date émission : <?= date('d/m/Y H:i', strtotime($commande['date_commande'])) ?></div>
                     <div>Statut : <span class="badge bg-warning text-dark"><?= strtoupper($commande['statut']) ?></span></div>
-                    <div>Émis par : Pharmacie Natinin</div>
+                    <div>Émis par : Pharmacie Souley-Guirou</div>
                 </div>
             </div>
         </div>

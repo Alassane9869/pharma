@@ -433,8 +433,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- ===== EN-TÊTE ===== -->
         <div class="login-header">
             <a href="#" class="logo-container">
-                <img src="assets/images/logo.png" alt="Pharmacie Natinin">
-                <h4><i class="fas fa-heartbeat"></i> Pharmacie Natinin</h4>
+                <img src="assets/images/logo.png" alt="Pharmacie Souley-Guirou">
+                <h4><i class="fas fa-heartbeat"></i> Pharmacie Souley-Guirou</h4>
                 <small>Système de Gestion Intégré</small>
             </a>
             <div class="decoration">
@@ -511,7 +511,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <!-- Copyright -->
     <div class="text-center mt-4" style="color: rgba(255,255,255,0.3); font-size: 11px; letter-spacing: 1px;">
-        &copy; <?= date('Y') ?> Pharmacie Natinin - Tous droits réservés
+        &copy; <?= date('Y') ?> Pharmacie Souley-Guirou - Tous droits réservés
     </div>
     
 </div>
