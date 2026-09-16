@@ -1,0 +1,95 @@
+-- Création des tables
+CREATE TABLE utilisateurs (
+    id_utilisateur INT AUTO_INCREMENT PRIMARY KEY,
+    nom_utilisateur VARCHAR(50) UNIQUE NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'pharmacien', 'assistant') DEFAULT 'assistant',
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE medicaments (
+    id_medicament INT AUTO_INCREMENT PRIMARY KEY,
+    code_cip VARCHAR(15) UNIQUE NOT NULL,
+    nom_medicament VARCHAR(100) NOT NULL,
+    description TEXT,
+    prix_achat DECIMAL(10,2) NOT NULL,
+    prix_vente DECIMAL(10,2) NOT NULL,
+    quantite_stock INT DEFAULT 0,
+    stock_minimum INT DEFAULT 10,
+    date_expiration DATE NOT NULL,
+    date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE clients (
+    id_client INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    telephone VARCHAR(20),
+    email VARCHAR(100),
+    adresse TEXT,
+    points_fidelite INT DEFAULT 0,
+    date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ventes (
+    id_vente INT AUTO_INCREMENT PRIMARY KEY,
+    id_client INT,
+    date_vente TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    montant_total DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (id_client) REFERENCES clients(id_client) ON DELETE SET NULL
+);
+
+CREATE TABLE details_ventes (
+    id_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_vente INT NOT NULL,
+    id_medicament INT NOT NULL,
+    quantite INT NOT NULL,
+    prix_unitaire DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (id_vente) REFERENCES ventes(id_vente) ON DELETE CASCADE,
+    FOREIGN KEY (id_medicament) REFERENCES medicaments(id_medicament)
+);
+
+-- Insertion d'un utilisateur admin par défaut (mot de passe: admin123)
+INSERT INTO utilisateurs (nom_utilisateur, mot_de_passe, role) 
+VALUES ('admin', MD5('admin123'), 'admin');
+
+-- Insertion de quelques médicaments exemple
+INSERT INTO medicaments (code_cip, nom_medicament, prix_achat, prix_vente, quantite_stock, stock_minimum, date_expiration) VALUES
+('3400934567890', 'Paracétamol 500mg', 1.50, 3.00, 100, 20, '2025-12-31'),
+('3400987654321', 'Ibuprofène 400mg', 2.00, 4.50, 50, 15, '2025-10-31'),
+('3400956781234', 'Amoxicilline 500mg', 3.50, 7.00, 30, 10, '2025-08-31');
+
+-- Insertion d'un client exemple
+
+
+CREATE TABLE fournisseurs (
+    id_fournisseur INT AUTO_INCREMENT PRIMARY KEY,
+    nom_fournisseur VARCHAR(100) NOT NULL,
+    contact VARCHAR(100),
+    telephone VARCHAR(20),
+    email VARCHAR(100),
+    adresse TEXT,
+    site_web VARCHAR(100),
+    date_ajout TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE commandes_fournisseurs (
+    id_commande INT AUTO_INCREMENT PRIMARY KEY,
+    id_fournisseur INT NOT NULL,
+    date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    montant_total DECIMAL(10,2) DEFAULT 0,
+    statut ENUM('en_attente', 'livree', 'annulee') DEFAULT 'en_attente',
+    FOREIGN KEY (id_fournisseur) REFERENCES fournisseurs(id_fournisseur) ON DELETE CASCADE
+);
+
+
+CREATE TABLE details_commandes (
+    id_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_commande INT NOT NULL,
+    id_medicament INT NOT NULL,
+    quantite INT NOT NULL,
+    prix_achat DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (id_commande) REFERENCES commandes_fournisseurs(id_commande) ON DELETE CASCADE,
+    FOREIGN KEY (id_medicament) REFERENCES medicaments(id_medicament) ON DELETE CASCADE
+);
