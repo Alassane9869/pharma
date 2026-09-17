@@ -12,14 +12,16 @@
     RewriteRule ^$ pharmacie-gestion/ [L,R=301]
 </IfModule>
 
-# Protection stricte de la base SQLite et des fichiers sensibles
-<FilesMatch "\.(sqlite|db|log|ini|sh|yml|git)$">
-    Order allow,deny
-    Deny from all
+# Protection des fichiers sensibles (Compatibilité Apache 2.2 / 2.4)
+<FilesMatch "\.(sqlite|db|log|ini|sh|sql|yml|git)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
 </FilesMatch>
-
-# Désactiver l'indexation des répertoires
-Options -Indexes
 
 # En-têtes de Sécurité HTTP
 <IfModule mod_headers.c>

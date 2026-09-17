@@ -17,10 +17,13 @@ git reset --hard origin/main
 echo "📁 2. Copie des fichiers vers $WEB_DIR..."
 cp -a "$REPO_DIR/." "$WEB_DIR/"
 
-# 3. Correction des permissions
-echo "🔒 3. Normalisation des permissions (Dossiers 755, Fichiers 644)..."
+# 3. Correction des permissions (Dossiers 755, Fichiers .htaccess & PHP 644)
+echo "🔒 3. Normalisation des permissions o2switch (Dossiers 755, Fichiers 644)..."
+chmod 755 "$WEB_DIR" 2>/dev/null || true
 find "$WEB_DIR" -type d -exec chmod 755 {} + 2>/dev/null || true
 find "$WEB_DIR" -type f -exec chmod 644 {} + 2>/dev/null || true
+chmod 644 "$WEB_DIR/.htaccess" 2>/dev/null || true
+chmod 644 "$WEB_DIR/pharmacie-gestion/.htaccess" 2>/dev/null || true
 
 # 4. Auto-initialisation de la base de données MySQL
 echo "🗄️ 4. Initialisation de la base MySQL vuxe8870_SouleyGuirou..."
