@@ -1,6 +1,6 @@
-# 🚀 Guide de Déploiement o2switch (cPanel Git Version Control)
+# 🚀 Guide de Déploiement 100% Automatique o2switch
 
-Ce guide détaille les étapes simples pour déployer **Pharmacie Souley-Guirou Pro** directement depuis GitHub sur le sous-domaine **Souley-Guirou.danayaplus.com** avec la base de données MySQL o2switch.
+L'application **Pharmacie Souley-Guirou Pro** intègre un **système d'installation zéro-clic**. Aucune manipulation manuelle sur phpMyAdmin n'est nécessaire !
 
 ---
 
@@ -15,43 +15,27 @@ Ce guide détaille les étapes simples pour déployer **Pharmacie Souley-Guirou 
 
 ---
 
-## 🗄️ Étape 1 : Importer la Base de Données dans phpMyAdmin (o2switch)
+## ⚡ Étape Unique : Lier et Déployer le Dépôt Git dans cPanel
 
 1. Connectez-vous à votre **cPanel o2switch**.
-2. Allez dans la section **Bases de données** > **phpMyAdmin**.
-3. Sélectionnez la base de données **`vuxe8870_SouleyGuirou`** dans le menu de gauche.
-4. Cliquez sur l'onglet **Importer** en haut.
-5. Choisissez le fichier **`schema_mysql.sql`** (qui se trouve à la racine de ce projet ou sur votre ordinateur).
-6. Cliquez sur **Exécuter** en bas pour importer la structure et les données de démarrage.
-
----
-
-## ⚡ Étape 2 : Lier et Déployer le Dépôt Git dans cPanel
-
-1. Dans votre cPanel o2switch, allez dans **Fichiers** > **Gestionnaire de version Git** (*Git Version Control*).
-2. Cliquez sur **Créer** (*Create*).
-3. Remplissez les champs suivants :
+2. Allez dans **Fichiers** > **Gestionnaire de version Git** (*Git Version Control*).
+3. Cliquez sur **Créer** (*Create*).
+4. Remplissez les champs :
    - **URL du dépôt clone** (*Clone URL*) : `https://github.com/Alassane9869/pharma.git`
-   - **Chemin du dépôt** (*Repository Path*) : `repositories/pharma` (ou laisser par défaut)
    - **Nom du dépôt** (*Repository Name*) : `pharma`
-4. Cliquez sur **Créer**. cPanel va cloner le projet.
-5. Une fois le dépôt créé, cliquez sur **Gérer** (*Manage*).
-6. Cliquez sur l'onglet **Déploiement** (*Deploy HEAD Commit*).
-7. Cliquez sur **Déployer le commit HEAD** (*Deploy HEAD Commit*).
+5. Cliquez sur **Créer**.
+6. Cliquez sur **Gérer** (*Manage*) > onglet **Déploiement** (*Deploy*) > **Déployer le commit HEAD**.
 
 ---
 
-## 🔑 Étape 3 : Accès et Connexion Administrateur
+## ✨ Auto-installation & Connexion Instantanée !
 
-1. Accédez à l'application sur : **[https://Souley-Guirou.danayaplus.com](https://Souley-Guirou.danayaplus.com)**
-2. Connectez-vous avec le compte administrateur initial :
+Dès que vous ouvrez votre site **[https://Souley-Guirou.danayaplus.com](https://Souley-Guirou.danayaplus.com)** :
+
+1. L'application se connecte automatiquement à MySQL (`vuxe8870_SouleyGuirou`).
+2. Si la base est vide, elle **crée automatiquement toutes les 9 tables** et insère le compte administrateur.
+3. Vous pouvez directement vous connecter avec :
    - **Nom d'utilisateur** : `admin`
    - **Mot de passe** : `admin123`
 
----
-
-## 🔒 Étape 4 : Sécurité & Configurations
-
-- La connexion à la base de données MySQL `vuxe8870_SouleyGuirou` se fait automatiquement via `includes/config.php`.
-- Le fichier `.htaccess` assure la réécriture d'URL et la sécurité du serveur.
-- Si le serveur fonctionne en local (sans serveur MySQL disponible), l'application bascule automatiquement sur SQLite pour vous permettre de travailler en hors-ligne.
+*(Optionnel)* Vous pouvez aussi consulter le statut d'installation visuel à tout moment sur : [https://Souley-Guirou.danayaplus.com/install.php](https://Souley-Guirou.danayaplus.com/install.php).
