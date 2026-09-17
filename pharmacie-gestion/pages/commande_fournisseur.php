@@ -248,7 +248,7 @@ require_once '../includes/header.php';
         </div>
     </div>
     <div class="widget-body">
-        <form method="POST">
+        <form method="POST" id="orderSaveForm">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="id_fournisseur" value="<?= $fournisseur['id_fournisseur'] ?>">
             
@@ -319,16 +319,25 @@ require_once '../includes/header.php';
                     </tbody>
                 </table>
             </div>
+
+            <!-- RÉSUMÉ DU TOTAL ESTIMÉ EN TEMPS RÉEL -->
+            <div class="total-box my-3 p-3 bg-light rounded border d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <div class="small text-muted font-uppercase fw-bold"><i class="fas fa-calculator text-success me-1"></i> MONTANT TOTAL ESTIMÉ DE LA COMMANDE</div>
+                    <small class="text-muted">Calculé automatiquement selon les médicaments sélectionnés</small>
+                </div>
+                <div class="fs-3 fw-bold text-success" id="orderTotalDisplay">0 CFA</div>
+            </div>
             
             <div class="d-flex gap-3 mt-4 flex-wrap">
                 <button type="submit" class="btn btn-success-custom">
-                    <i class="fas fa-check"></i> Valider la commande
+                    <i class="fas fa-check me-1"></i> Valider et Enregistrer la commande
                 </button>
                 <a href="fournisseurs.php" class="btn btn-secondary-custom">
-                    <i class="fas fa-times"></i> Annuler
+                    <i class="fas fa-times me-1"></i> Annuler
                 </a>
-                <button type="reset" class="btn btn-outline-secondary">
-                    <i class="fas fa-undo"></i> Réinitialiser
+                <button type="reset" class="btn btn-outline-secondary" onclick="setTimeout(calculateOrderTotal, 100)">
+                    <i class="fas fa-undo me-1"></i> Réinitialiser
                 </button>
             </div>
         </form>
@@ -346,18 +355,39 @@ require_once '../includes/header.php';
 <script>
 // ===== TOGGLE SIDEBAR =====
 function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('show');
+    document.getElementById('sidebar')?.classList.toggle('show');
 }
 
 document.addEventListener('click', function(e) {
     if (window.innerWidth <= 992) {
         const sidebar = document.getElementById('sidebar');
         const toggle = document.querySelector('.sidebar-toggle');
-        if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        if (sidebar && toggle && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
             sidebar.classList.remove('show');
         }
     }
 });
+
+// ===== CALCUL DU TOTAL ESTIMÉ EN TEMPS RÉEL =====
+function calculateOrderTotal() {
+    const totalDisplay = document.getElementById('orderTotalDisplay');
+    if (!totalDisplay) return;
+    
+    let total = 0;
+    document.querySelectorAll('.product-check:checked').forEach(cb => {
+        const row = cb.closest('tr');
+        const qtyInput = row.querySelector('.qty-input');
+        const priceInput = row.querySelector('.price-input');
+        
+        if (qtyInput && priceInput && !qtyInput.disabled) {
+            const qty = parseFloat(qtyInput.value) || 0;
+            const price = parseFloat(priceInput.value) || 0;
+            total += qty * price;
+        }
+    });
+    
+    totalDisplay.textContent = Math.round(total).toLocaleString('fr-FR') + ' CFA';
+}
 
 // ===== SELECTION TOUS LES PRODUITS =====
 function toggleAll(masterCheckbox) {
@@ -366,6 +396,7 @@ function toggleAll(masterCheckbox) {
         cb.checked = masterCheckbox.checked;
         toggleQuantity(cb);
     });
+    calculateOrderTotal();
 }
 
 function selectAll() {
@@ -374,7 +405,9 @@ function selectAll() {
         cb.checked = true;
         toggleQuantity(cb);
     });
-    document.getElementById('selectAllCheck').checked = true;
+    const master = document.getElementById('selectAllCheck');
+    if (master) master.checked = true;
+    calculateOrderTotal();
 }
 
 function deselectAll() {
@@ -383,14 +416,22 @@ function deselectAll() {
         cb.checked = false;
         toggleQuantity(cb);
     });
-    document.getElementById('selectAllCheck').checked = false;
+    const master = document.getElementById('selectAllCheck');
+    if (master) master.checked = false;
+    calculateOrderTotal();
 }
 
 // ===== ACTIVER/DÉSACTIVER LA QUANTITÉ =====
 document.querySelectorAll('.product-check').forEach(cb => {
     cb.addEventListener('change', function() {
         toggleQuantity(this);
+        calculateOrderTotal();
     });
+});
+
+document.querySelectorAll('.qty-input, .price-input').forEach(input => {
+    input.addEventListener('input', calculateOrderTotal);
+    input.addEventListener('change', calculateOrderTotal);
 });
 
 function toggleQuantity(checkbox) {
@@ -401,11 +442,11 @@ function toggleQuantity(checkbox) {
     if (checkbox.checked) {
         qtyInput.disabled = false;
         priceInput.disabled = false;
-        if (qtyInput.value == '0') {
+        if (qtyInput.value == '0' || qtyInput.value === '') {
             qtyInput.value = '1';
         }
         // Si stock bas, proposer une quantité recommandée
-        const stock = parseInt(checkbox.dataset.stock);
+        const stock = parseInt(checkbox.dataset.stock || '0');
         if (stock <= 10 && stock > 0) {
             qtyInput.value = Math.max(1, Math.floor(stock * 1.5));
         } else if (stock == 0) {
@@ -424,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleQuantity(cb);
     });
     updateMasterCheckbox();
+    calculateOrderTotal();
 });
 
 function updateMasterCheckbox() {
@@ -436,21 +478,24 @@ function updateMasterCheckbox() {
 }
 
 // ===== VALIDATION DU FORMULAIRE =====
-document.querySelector('form')?.addEventListener('submit', function(e) {
-    const quantities = document.querySelectorAll('.qty-input:not([disabled])');
-    let hasItems = false;
-    
-    quantities.forEach(qty => {
-        if (parseInt(qty.value) > 0) {
-            hasItems = true;
+const orderSaveForm = document.getElementById('orderSaveForm');
+if (orderSaveForm) {
+    orderSaveForm.addEventListener('submit', function(e) {
+        const quantities = document.querySelectorAll('.qty-input:not([disabled])');
+        let hasItems = false;
+        
+        quantities.forEach(qty => {
+            if (parseInt(qty.value) > 0) {
+                hasItems = true;
+            }
+        });
+        
+        if (!hasItems) {
+            e.preventDefault();
+            alert('⚠️ Veuillez sélectionner au moins un médicament avec une quantité supérieure à 0.');
         }
     });
-    
-    if (!hasItems) {
-        e.preventDefault();
-        alert('⚠️ Veuillez sélectionner au moins un médicament avec une quantité supérieure à 0.');
-    }
-});
+}
 </script>
 
 </body>
