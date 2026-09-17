@@ -12,7 +12,7 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document_Officiel_PDF_Pharmacie_Souley_Guirou</title>
+    <title>Document_PDF_Pharmacie_Souley_Guirou</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -109,7 +109,7 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
             <img src="../assets/images/logo.png" alt="Pharmacie Souley-Guirou" class="header-logo" onerror="this.style.display='none'">
             <div>
                 <h3 class="doc-title mb-1"><i class="fas fa-heartbeat text-success"></i> PHARMACIE SOULEY-GUIROU</h3>
-                <p class="text-muted small mb-0">Système Officiel de Gestion & Documents Officiels</p>
+                <p class="text-muted small mb-0">Système de Gestion & Documents</p>
                 <p class="text-muted small mb-0">Tél: +221 33 821 00 00 &bull; Email: contact@Souley-Guirou.danayaplus.com</p>
             </div>
         </div>
@@ -120,11 +120,11 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
                 <div class="small fw-bold text-dark mt-1">Généré le : <?= date('d/m/Y à H:i') ?></div>
             <?php elseif ($type === 'commande'): ?>
                 <h4 class="fw-bold text-success mb-1">BON DE COMMANDE</h4>
-                <div class="text-muted small">Commande Fournisseur Officielle</div>
+                <div class="text-muted small">Commande Fournisseur</div>
                 <div class="small fw-bold text-dark mt-1">Ref N° #CMD-<?= str_pad($id, 6, '0', STR_PAD_LEFT) ?></div>
             <?php elseif ($type === 'facture'): ?>
                 <h4 class="fw-bold text-success mb-1">FACTURE DE VENTE</h4>
-                <div class="text-muted small">Document Officiel de Caisse</div>
+                <div class="text-muted small">Document de Caisse</div>
                 <div class="small fw-bold text-dark mt-1">Ref N° #FAC-<?= date('Y') ?>-<?= str_pad($id, 6, '0', STR_PAD_LEFT) ?></div>
             <?php elseif ($type === 'clients'): ?>
                 <h4 class="fw-bold text-success mb-1">ANNUAIRE CLIENTS & FIDÉLITÉ</h4>

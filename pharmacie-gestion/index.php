@@ -567,7 +567,7 @@ require_once 'includes/header.php';
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <span class="text-muted small"><i class="fas fa-database me-2 text-info"></i>Base de données</span>
-                    <span class="badge bg-light text-dark border">SQLite 3 (Local)</span>
+                    <span class="badge bg-success bg-gradient"><i class="fas fa-database me-1"></i> MySQL 8.0</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                     <span class="text-muted small"><i class="fas fa-check-circle me-2 text-success"></i>Statut Serveur</span>

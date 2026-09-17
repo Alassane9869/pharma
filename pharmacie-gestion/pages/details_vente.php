@@ -443,7 +443,7 @@ $invoiceNumber = "FAC-" . date('Y', strtotime($vente['date_vente'])) . "-" . str
             </div>
             
             <div class="invoice-title-block">
-                <div class="invoice-type-badge">Facture Officielle / Reçu</div>
+                <div class="invoice-type-badge">Facture Vente / Reçu</div>
                 <div class="invoice-num"><?= $invoiceNumber ?></div>
                 <div class="invoice-date">
                     <i class="far fa-calendar-alt me-1"></i> Date : <?= date('d/m/Y à H:i', strtotime($vente['date_vente'])) ?>
@@ -554,7 +554,7 @@ $invoiceNumber = "FAC-" . date('Y', strtotime($vente['date_vente'])) . "-" . str
     <!-- PIED DE PAGE ET BARCODE -->
     <div class="invoice-footer">
         <div>
-            <strong>Pharmacie Souley-Guirou</strong> &bull; Document officiel certifié conforme &bull; Page 1/1
+            <strong>Pharmacie Souley-Guirou</strong> &bull; Document certifié conforme &bull; Page 1/1
         </div>
         <div class="d-flex align-items-center gap-2">
             <div class="fake-barcode">
