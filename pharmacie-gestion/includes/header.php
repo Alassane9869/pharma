@@ -96,33 +96,66 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             margin-top: 2px;
         }
         
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0.85;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .sidebar .nav-link {
-            color: rgba(255,255,255,0.8);
-            padding: 10px 20px;
-            margin: 2px 10px;
-            border-radius: 10px;
-            transition: all 0.3s;
+            color: rgba(255,255,255,0.85);
+            padding: 11px 18px;
+            margin: 4px 12px;
+            border-radius: 12px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             font-size: 14px;
+            font-weight: 500;
             text-decoration: none;
+            position: relative;
         }
         
         .sidebar .nav-link:hover {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            transform: translateX(5px);
+            background: rgba(255,255,255,0.18);
+            color: #ffffff;
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         .sidebar .nav-link.active {
-            background: rgba(255,255,255,0.2);
-            color: white;
+            background: rgba(255,255,255,0.25);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .sidebar .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 4px;
+            background: #81c784;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 8px rgba(129, 199, 132, 0.8);
         }
         
         .sidebar .nav-link i {
             width: 22px;
             margin-right: 10px;
-            font-size: 14px;
+            font-size: 15px;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar .nav-link:hover i {
+            transform: scale(1.15);
         }
         
         .sidebar .nav-link .badge {
@@ -168,6 +201,7 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             margin-left: 250px;
             padding: 15px 25px;
             min-height: 100vh;
+            animation: pageFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
         
         /* ===== PAGE HEADER ===== */

@@ -100,9 +100,9 @@ $stmt->execute($params);
 $clients = $stmt->fetchAll();
 
 // ===== STATISTIQUES =====
-$stats = [];
+$currentMonth = date('Y-m');
 $stats['total'] = $conn->query("SELECT COUNT(*) FROM clients")->fetchColumn();
-$stats['nouveaux_mois'] = $conn->query("SELECT COUNT(*) FROM clients WHERE strftime('%Y-%m', date_inscription) = strftime('%Y-%m', 'now', 'localtime')")->fetchColumn();
+$stats['nouveaux_mois'] = $conn->query("SELECT COUNT(*) FROM clients WHERE date_inscription LIKE '$currentMonth%'")->fetchColumn();
 $stats['points_total'] = $conn->query("SELECT COALESCE(SUM(points_fidelite), 0) FROM clients")->fetchColumn();
 $stats['fideles'] = $conn->query("SELECT COUNT(*) FROM clients WHERE points_fidelite >= 100")->fetchColumn();
 
