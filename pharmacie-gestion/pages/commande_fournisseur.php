@@ -192,34 +192,39 @@ require_once '../includes/header.php';
     </div>
 <?php else: ?>
     <!-- Sélection du fournisseur -->
-    <div class="widget mb-4 animated">
-        <div class="widget-header">
-            <h5><i class="fas fa-search"></i> Sélectionner un fournisseur</h5>
+    <div class="widget mb-4 animated shadow-sm border-0">
+        <div class="widget-header bg-light py-3 px-4 d-flex align-items-center justify-content-between">
+            <h5 class="m-0 text-success fw-bold"><i class="fas fa-truck me-2"></i> Étape 1 sur 2 : Sélectionner un fournisseur</h5>
+            <span class="badge bg-success bg-gradient px-3 py-2">Étape 1 / 2</span>
         </div>
-        <div class="widget-body">
-            <form method="GET" class="row g-3">
+        <div class="widget-body p-4">
+            <form method="GET" class="row g-3 align-items-center">
                 <div class="col-md-8">
-                    <select name="id" class="form-select fournisseur-select" required>
-                        <option value="">-- Choisir un fournisseur --</option>
-                        <?php foreach ($fournisseurs as $f): ?>
-                            <option value="<?= $f['id_fournisseur'] ?>">
-                                <?= htmlspecialchars($f['nom_fournisseur']) ?>
-                                <?php if ($f['telephone']): ?>
-                                    - <?= $f['telephone'] ?>
-                                <?php endif; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-light text-success border-end-0"><i class="fas fa-building"></i></span>
+                        <select name="id" class="form-select border-start-0 fournisseur-select" required style="font-size: 15px;">
+                            <option value="">-- Choisir un partenaire fournisseur --</option>
+                            <?php foreach ($fournisseurs as $f): ?>
+                                <option value="<?= $f['id_fournisseur'] ?>">
+                                    <?= htmlspecialchars($f['nom_fournisseur']) ?>
+                                    <?php if ($f['telephone']): ?>
+                                        (Tél: <?= $f['telephone'] ?>)
+                                    <?php endif; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-success w-100">
-                        <i class="fas fa-arrow-right"></i> Continuer
+                    <button type="submit" class="btn btn-success btn-lg w-100 fw-bold shadow-sm" style="background: linear-gradient(135deg, #1b5e20, #388e3c); border: none;">
+                        <i class="fas fa-arrow-right me-2"></i> Continuer la commande
                     </button>
                 </div>
             </form>
-            <div class="text-center mt-3">
-                <a href="fournisseurs.php" class="btn btn-link btn-sm">
-                    <i class="fas fa-plus"></i> Ajouter un fournisseur
+            <div class="d-flex align-items-center justify-content-between mt-3 pt-3 border-top text-muted small">
+                <span><i class="fas fa-info-circle text-info me-1"></i> Choisissez un fournisseur pour afficher son catalogue.</span>
+                <a href="fournisseurs.php" class="text-success text-decoration-none fw-bold">
+                    <i class="fas fa-plus-circle me-1"></i> Nouveau fournisseur ?
                 </a>
             </div>
         </div>
