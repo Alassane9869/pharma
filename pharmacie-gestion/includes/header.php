@@ -17,6 +17,8 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title><?= $page_title ?? 'Pharmacie Souley-Guirou' ?></title>
+    <link rel="icon" type="image/x-icon" href="<?= $root_path ?>assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="<?= $root_path ?>assets/images/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <?php if (isset($include_chart) && $include_chart): ?>
@@ -1761,8 +1763,9 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
     <button class="btn-mobile-toggle" onclick="toggleSidebarMobile()" aria-label="Menu">
         <i class="fas fa-bars"></i>
     </button>
-    <div class="mobile-brand">
-        <i class="fas fa-heartbeat text-success me-1"></i> Souley-Guirou
+    <div class="mobile-brand d-flex align-items-center">
+        <img src="<?= $root_path ?>assets/images/logo.png" alt="Logo" style="height: 30px; width: 30px; border-radius: 8px; margin-right: 8px; object-fit: cover;">
+        <span>Souley-Guirou</span>
     </div>
     <div class="mobile-user" title="<?= htmlspecialchars($_SESSION['user_name'] ?? 'U') ?>">
         <?= strtoupper(substr($_SESSION['user_name'] ?? 'A', 0, 1)) ?>
