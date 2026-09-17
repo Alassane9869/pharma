@@ -1,0 +1,8 @@
+# Protection spécifique pour la base de données SQLite
+<FilesMatch "\.(sqlite|db)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Désactiver l'indexation des répertoires
+Options -Indexes

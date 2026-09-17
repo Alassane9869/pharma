@@ -30,8 +30,10 @@ function getConnection() {
             // Auto-initialisation et migration du schéma
             if (!$dbExists || filesize($dbPath) === 0) {
                 initSqliteDatabase($conn);
+                @chmod($dbPath, 0666);
             } else {
                 migrateSqliteDatabase($conn);
+                @chmod($dbPath, 0666);
             }
         } catch(PDOException $e) {
             die("Erreur de connexion SQLite : " . $e->getMessage());

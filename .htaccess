@@ -1,0 +1,29 @@
+# ============================================
+# CONFIGURATION APACHE O2SWITCH / CPANEL
+# ============================================
+
+# Activation de la réécriture d'URL
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirection automatique vers la racine de l'application
+    RewriteCond %{REQUEST_URI} !^/pharmacie-gestion/
+    RewriteRule ^$ pharmacie-gestion/ [L,R=301]
+</IfModule>
+
+# Protection stricte de la base SQLite et des fichiers sensibles
+<FilesMatch "\.(sqlite|db|log|ini|sh|yml|git)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Désactiver l'indexation des répertoires
+Options -Indexes
+
+# En-têtes de Sécurité HTTP
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>

@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/public_html
+    - /bin/cp -R * $DEPLOYPATH
+    - /bin/chmod 755 $DEPLOYPATH/pharmacie-gestion 2>/dev/null || true
+    - /bin/chmod 666 $DEPLOYPATH/pharmacie-gestion/pharmacie.sqlite 2>/dev/null || true
