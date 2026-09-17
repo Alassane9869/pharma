@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $stmt = $conn->prepare("
         SELECT v.*, 
                (SELECT COUNT(*) FROM details_ventes WHERE id_vente = v.id_vente) as nb_articles,
-               (SELECT GROUP_CONCAT(m.nom_medicament || ' (x' || dv.quantite || ')', ', ') 
+               (SELECT GROUP_CONCAT(CONCAT(m.nom_medicament, ' (x', dv.quantite, ')')) 
                 FROM details_ventes dv 
                 JOIN medicaments m ON dv.id_medicament = m.id_medicament 
                 WHERE dv.id_vente = v.id_vente) as produits_vendus

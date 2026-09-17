@@ -1,51 +1,76 @@
 <?php
-// Configuration de la base de données SQLite
+// Configuration de la base de données
+// Support PDO MySQL (o2switch production) et SQLite (développement local)
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'vuxe8870_SouleyGuirou');
+define('DB_USER', 'vuxe8870_souley');
+define('DB_PASS', 'B_;H7Lz]=Q,Gd(?_');
 define('DB_FILE', __DIR__ . '/../pharmacie.sqlite');
+
 date_default_timezone_set('UTC');
 
-// Connexion à la base de données SQLite
+// Connexion à la base de données (PDO MySQL avec fallback SQLite)
 function getConnection() {
     static $conn = null;
     if ($conn === null) {
-        $dbPath = DB_FILE;
-        $dbExists = file_exists($dbPath);
-        
+        // 1. Essayer la connexion MySQL / MariaDB (environnement de production o2switch)
         try {
-            $conn = new PDO("sqlite:" . $dbPath);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            $conn->exec('PRAGMA foreign_keys = ON;');
+            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+            $conn = new PDO($dsn, DB_USER, DB_PASS, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+            ]);
+            return $conn;
+        } catch(PDOException $mysqlErr) {
+            // 2. Si MySQL n'est pas disponible (ex: environnement local SQLite), fallback sur SQLite
+            try {
+                $dbPath = DB_FILE;
+                $dbExists = file_exists($dbPath);
+                
+                $conn = new PDO("sqlite:" . $dbPath);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                $conn->exec('PRAGMA foreign_keys = ON;');
 
-            // Fonctions personnalisées MySQL pour SQLite (compatibilité PDO SQLite)
-            if (method_exists($conn, 'sqliteCreateFunction')) {
-                $conn->sqliteCreateFunction('MD5', function($string) {
-                    return md5((string)$string);
-                }, 1);
+                // Fonctions personnalisées MySQL pour la compatibilité PDO SQLite
+                if (method_exists($conn, 'sqliteCreateFunction')) {
+                    $conn->sqliteCreateFunction('MD5', function($string) {
+                        return md5((string)$string);
+                    }, 1);
 
-                $conn->sqliteCreateFunction('CURDATE', function() {
-                    return date('Y-m-d');
-                });
+                    $conn->sqliteCreateFunction('CURDATE', function() {
+                        return date('Y-m-d');
+                    });
+
+                    $conn->sqliteCreateFunction('NOW', function() {
+                        return date('Y-m-d H:i:s');
+                    });
+
+                    $conn->sqliteCreateFunction('CONCAT', function(...$args) {
+                        return implode('', $args);
+                    });
+                }
+
+                // Auto-initialisation du schéma SQLite si base vierge
+                if (!$dbExists || filesize($dbPath) === 0) {
+                    initSqliteDatabase($conn);
+                    @chmod($dbPath, 0666);
+                } else {
+                    migrateSqliteDatabase($conn);
+                    @chmod($dbPath, 0666);
+                }
+            } catch(PDOException $sqliteErr) {
+                die("Erreur de connexion à la base de données : " . $sqliteErr->getMessage());
             }
-
-            // Auto-initialisation et migration du schéma
-            if (!$dbExists || filesize($dbPath) === 0) {
-                initSqliteDatabase($conn);
-                @chmod($dbPath, 0666);
-            } else {
-                migrateSqliteDatabase($conn);
-                @chmod($dbPath, 0666);
-            }
-        } catch(PDOException $e) {
-            die("Erreur de connexion SQLite : " . $e->getMessage());
         }
     }
     return $conn;
 }
 
-// Migration dynamique pour ajouter les colonnes et tables manquantes
+// Migration dynamique pour SQLite (ajouter colonnes et tables manquantes)
 function migrateSqliteDatabase($conn) {
     try {
-        // 1. Colonnes de medicaments
         $cols = $conn->query("PRAGMA table_info(medicaments)")->fetchAll(PDO::FETCH_COLUMN, 1);
         if (!in_array('categorie', $cols)) {
             $conn->exec("ALTER TABLE medicaments ADD COLUMN categorie TEXT;");
@@ -54,13 +79,11 @@ function migrateSqliteDatabase($conn) {
             $conn->exec("ALTER TABLE medicaments ADD COLUMN id_fournisseur INTEGER;");
         }
 
-        // 2. Colonnes de utilisateurs
         $uCols = $conn->query("PRAGMA table_info(utilisateurs)")->fetchAll(PDO::FETCH_COLUMN, 1);
         if (!in_array('status', $uCols)) {
             $conn->exec("ALTER TABLE utilisateurs ADD COLUMN status TEXT DEFAULT 'actif';");
         }
 
-        // 3. Table logs_activites
         $conn->exec("
             CREATE TABLE IF NOT EXISTS logs_activites (
                 id_log INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,11 +96,11 @@ function migrateSqliteDatabase($conn) {
             );
         ");
     } catch(Exception $e) {
-        // Ne pas bloquer si déjà migré
+        // Ignorer si déjà migré
     }
 }
 
-// Initialisation automatique de la base de données SQLite
+// Initialisation automatique de la base SQLite
 function initSqliteDatabase($conn) {
     $sql = "
     CREATE TABLE IF NOT EXISTS utilisateurs (
@@ -113,6 +136,7 @@ function initSqliteDatabase($conn) {
         telephone TEXT,
         email TEXT,
         adresse TEXT,
+        date_naissance DATE,
         points_fidelite INTEGER DEFAULT 0,
         date_inscription DATETIME DEFAULT CURRENT_TIMESTAMP
     );

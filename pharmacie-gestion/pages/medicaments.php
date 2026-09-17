@@ -135,7 +135,9 @@ $stats = [];
 $stats['total'] = $conn->query("SELECT COUNT(*) FROM medicaments")->fetchColumn();
 $stats['alerte'] = $conn->query("SELECT COUNT(*) FROM medicaments WHERE quantite_stock <= stock_minimum AND quantite_stock > 0")->fetchColumn();
 $stats['rupture'] = $conn->query("SELECT COUNT(*) FROM medicaments WHERE quantite_stock = 0")->fetchColumn();
-$stats['expiration'] = $conn->query("SELECT COUNT(*) FROM medicaments WHERE date_expiration BETWEEN date('now', 'localtime') AND date('now', 'localtime', '+30 days')")->fetchColumn();
+$today = date('Y-m-d');
+$in30days = date('Y-m-d', strtotime('+30 days'));
+$stats['expiration'] = $conn->query("SELECT COUNT(*) FROM medicaments WHERE date_expiration BETWEEN '$today' AND '$in30days'")->fetchColumn();
 $stats['valeur_stock'] = $conn->query("SELECT COALESCE(SUM(prix_achat * quantite_stock), 0) FROM medicaments")->fetchColumn();
 
 // Inclure l'en-tête

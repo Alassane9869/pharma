@@ -12,13 +12,17 @@ $conn = getConnection();
 $totalMedicaments = $conn->query("SELECT COUNT(*) FROM medicaments")->fetchColumn();
 $ruptureStock = $conn->query("SELECT COUNT(*) FROM medicaments WHERE quantite_stock <= stock_minimum")->fetchColumn();
 
+$today = date('Y-m-d');
+$currentMonth = date('Y-m');
+$minus7days = date('Y-m-d', strtotime('-7 days'));
+
 // Ventes du jour
 $ventesJour = $conn->query("
     SELECT 
         COUNT(*) as total_ventes,
         COALESCE(SUM(montant_total), 0) as ca_jour
     FROM ventes 
-    WHERE date(date_vente) = date('now', 'localtime')
+    WHERE DATE(date_vente) = '$today'
 ")->fetch();
 
 // Ventes du mois
@@ -27,7 +31,7 @@ $ventesMois = $conn->query("
         COUNT(*) as total_ventes,
         COALESCE(SUM(montant_total), 0) as ca_mois
     FROM ventes 
-    WHERE strftime('%Y-%m', date_vente) = strftime('%Y-%m', 'now', 'localtime')
+    WHERE date_vente LIKE '$currentMonth%'
 ")->fetch();
 
 // Nombre de clients
@@ -35,7 +39,7 @@ $totalClients = $conn->query("SELECT COUNT(*) FROM clients")->fetchColumn();
 $nouveauxClients = $conn->query("
     SELECT COUNT(*) 
     FROM clients 
-    WHERE strftime('%Y-%m', date_inscription) = strftime('%Y-%m', 'now', 'localtime')
+    WHERE date_inscription LIKE '$currentMonth%'
 ")->fetchColumn();
 
 // Points de fidélité total
@@ -58,7 +62,7 @@ $topProduits = $conn->query("
         COALESCE(SUM(dv.quantite * dv.prix_unitaire), 0) as chiffre_affaires
     FROM medicaments m
     LEFT JOIN details_ventes dv ON m.id_medicament = dv.id_medicament
-    GROUP BY m.id_medicament
+    GROUP BY m.id_medicament, m.nom_medicament, m.code_cip, m.prix_vente
     ORDER BY total_vendu DESC
     LIMIT 5
 ")->fetchAll();
@@ -72,7 +76,7 @@ $ventesRecentes = $conn->query("
         c.nom,
         c.prenom,
         (SELECT COUNT(*) FROM details_ventes WHERE id_vente = v.id_vente) as nb_articles,
-        (SELECT GROUP_CONCAT(m.nom_medicament || ' (x' || dv.quantite || ')', ', ') 
+        (SELECT GROUP_CONCAT(CONCAT(m.nom_medicament, ' (x', dv.quantite, ')')) 
          FROM details_ventes dv 
          JOIN medicaments m ON dv.id_medicament = m.id_medicament 
          WHERE dv.id_vente = v.id_vente) as produits_vendus
@@ -99,12 +103,12 @@ $stockFaible = $conn->query("
 // Ventes par jour (7 derniers jours)
 $ventes7Jours = $conn->query("
     SELECT 
-        date(date_vente) as date_jour,
+        DATE(date_vente) as date_jour,
         COUNT(*) as nb_ventes,
         COALESCE(SUM(montant_total), 0) as total_ca
     FROM ventes 
-    WHERE date_vente >= date('now', '-7 days')
-    GROUP BY date(date_vente)
+    WHERE date_vente >= '$minus7days'
+    GROUP BY DATE(date_vente)
     ORDER BY date_jour ASC
 ")->fetchAll();
 

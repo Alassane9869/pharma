@@ -15,8 +15,12 @@ $conn = getConnection();
 
 // ===== STATISTIQUES RAPIDES =====
 $totalMedicaments = $conn->query("SELECT COUNT(*) FROM medicaments")->fetchColumn();
-$ventesAujourdhui = $conn->query("SELECT COUNT(*) FROM ventes WHERE date(date_vente) = date('now', 'localtime')")->fetchColumn();
-$caAujourdhui = $conn->query("SELECT COALESCE(SUM(montant_total), 0) FROM ventes WHERE date(date_vente) = date('now', 'localtime')")->fetchColumn();
+$today = date('Y-m-d');
+$in30days = date('Y-m-d', strtotime('+30 days'));
+$minus7days = date('Y-m-d', strtotime('-7 days'));
+
+$ventesAujourdhui = $conn->query("SELECT COUNT(*) FROM ventes WHERE DATE(date_vente) = '$today'")->fetchColumn();
+$caAujourdhui = $conn->query("SELECT COALESCE(SUM(montant_total), 0) FROM ventes WHERE DATE(date_vente) = '$today'")->fetchColumn();
 $totalClients = $conn->query("SELECT COUNT(*) FROM clients")->fetchColumn();
 $commandesAttente = $conn->query("SELECT COUNT(*) FROM commandes_fournisseurs WHERE statut = 'en_attente'")->fetchColumn();
 $alertesStock = $conn->query("SELECT COUNT(*) FROM medicaments WHERE quantite_stock <= stock_minimum AND quantite_stock > 0")->fetchColumn();
@@ -28,7 +32,7 @@ $pointsFideliteTotal = $conn->query("SELECT COALESCE(SUM(points_fidelite), 0) FR
 $dernieresVentes = $conn->query("
     SELECT v.*, c.nom, c.prenom,
            (SELECT COUNT(*) FROM details_ventes WHERE id_vente = v.id_vente) as nb_articles,
-           (SELECT GROUP_CONCAT(m.nom_medicament || ' (x' || dv.quantite || ')', ', ') 
+           (SELECT GROUP_CONCAT(CONCAT(m.nom_medicament, ' (x', dv.quantite, ')')) 
             FROM details_ventes dv 
             JOIN medicaments m ON dv.id_medicament = m.id_medicament 
             WHERE dv.id_vente = v.id_vente) as produits_vendus
@@ -42,18 +46,18 @@ $dernieresVentes = $conn->query("
 $alertesPeremption = $conn->query("
     SELECT COUNT(*) 
     FROM medicaments 
-    WHERE date_expiration BETWEEN date('now', 'localtime') AND date('now', 'localtime', '+30 days')
+    WHERE date_expiration BETWEEN '$today' AND '$in30days'
 ")->fetchColumn();
 
 // Données graphique 7 jours
 $ventes7Jours = $conn->query("
     SELECT 
-        date(date_vente) as date_jour,
+        DATE(date_vente) as date_jour,
         COUNT(*) as nb_ventes,
         COALESCE(SUM(montant_total), 0) as total_ca
     FROM ventes 
-    WHERE date_vente >= date('now', '-7 days')
-    GROUP BY date(date_vente)
+    WHERE date_vente >= '$minus7days'
+    GROUP BY DATE(date_vente)
     ORDER BY date_jour ASC
 ")->fetchAll();
 

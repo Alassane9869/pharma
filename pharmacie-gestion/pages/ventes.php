@@ -30,17 +30,18 @@ $stmt = $conn->query("
 $clients = $stmt->fetchAll();
 
 // Récupérer les ventes du jour avec le détail des médicaments
+$today = date('Y-m-d');
 $ventesJour = [];
 $stmt = $conn->query("
     SELECT v.*, c.nom, c.prenom,
-           (SELECT GROUP_CONCAT(m.nom_medicament || ' (x' || dv.quantite || ')', ', ') 
+           (SELECT GROUP_CONCAT(CONCAT(m.nom_medicament, ' (x', dv.quantite, ')')) 
             FROM details_ventes dv 
             JOIN medicaments m ON dv.id_medicament = m.id_medicament 
             WHERE dv.id_vente = v.id_vente) as produits_vendus,
            (SELECT COALESCE(SUM(quantite), 0) FROM details_ventes WHERE id_vente = v.id_vente) as total_articles
     FROM ventes v 
     LEFT JOIN clients c ON v.id_client = c.id_client 
-    WHERE date(v.date_vente) = date('now', 'localtime') 
+    WHERE DATE(v.date_vente) = '$today' 
     ORDER BY v.date_vente DESC
     LIMIT 20
 ");
@@ -54,7 +55,7 @@ $stmt = $conn->query("
         COALESCE(SUM(montant_total), 0) as total_ca,
         COALESCE(AVG(montant_total), 0) as panier_moyen
     FROM ventes 
-    WHERE date(date_vente) = date('now', 'localtime')
+    WHERE DATE(date_vente) = '$today'
 ");
 $statsJour = $stmt->fetch();
 
