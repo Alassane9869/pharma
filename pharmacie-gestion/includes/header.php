@@ -12,7 +12,10 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1b5e20">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title><?= $page_title ?? 'Pharmacie Souley-Guirou' ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -1555,33 +1558,164 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             border-radius: 10px;
         }
 
-        /* Responsive clients */
-        @media (max-width: 768px) {
+        /* ===== ULTRA-RESPONSIVE MOBILE & TABLET (Android & iOS) ===== */
+        -webkit-tap-highlight-color: transparent;
+        -webkit-overflow-scrolling: touch;
+
+        /* Mobile Topbar fixed */
+        .mobile-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #ffffff;
+            border-bottom: 1px solid #eef0f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .mobile-navbar .btn-mobile-toggle {
+            background: #f0f4f0;
+            border: none;
+            color: #1b5e20;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mobile-navbar .btn-mobile-toggle:active {
+            transform: scale(0.92);
+        }
+
+        .mobile-navbar .mobile-brand {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1b5e20;
+        }
+
+        .mobile-navbar .mobile-user {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #1b5e20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Sidebar Backdrop */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            z-index: 1040;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Drawer Sidebar (Tablets & Mobile < 992px) */
+        @media (max-width: 991px) {
+            .sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                height: 100vh !important;
+                width: 270px !important;
+                transform: translateX(-100%) !important;
+                z-index: 1050 !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                box-shadow: 5px 0 25px rgba(0,0,0,0.2) !important;
+            }
+            .sidebar.show {
+                transform: translateX(0) !important;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding-top: 75px !important;
+                padding-left: 14px !important;
+                padding-right: 14px !important;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .sidebar-toggle {
+                display: none !important;
+            }
+        }
+
+        /* Phones (< 576px - iPhone & Android) */
+        @media (max-width: 576px) {
+            /* Fix Auto-Zoom iOS Safari sur les inputs */
+            input[type="text"], input[type="number"], input[type="email"], input[type="password"], select, textarea {
+                font-size: 16px !important;
+            }
+            .stat-card {
+                padding: 12px 14px;
+            }
+            .stat-card .stat-number {
+                font-size: 20px;
+            }
+            .table-responsive {
+                -webkit-overflow-scrolling: touch;
+                border-radius: 8px;
+            }
             .client-card {
                 flex-direction: column;
                 align-items: stretch;
                 text-align: center;
             }
-            
-            .client-card .client-avatar {
-                margin: 0 auto;
+            .client-card .client-avatar, .client-card .client-points {
+                margin: 0 auto 8px auto;
             }
-            
-            .client-card .client-points {
-                margin: 5px auto;
-            }
-            
             .client-card .client-actions {
                 justify-content: center;
-            }
-            
-            .client-card .client-info .details {
-                text-align: center;
             }
         }
     </style>
 </head>
 <body>
+
+<!-- ===== BARRE DE NAVIGATION MOBILE (Android & iOS) ===== -->
+<div class="mobile-navbar d-lg-none">
+    <button class="btn-mobile-toggle" onclick="toggleSidebarMobile()" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="mobile-brand">
+        <i class="fas fa-heartbeat text-success me-1"></i> Souley-Guirou
+    </div>
+    <div class="mobile-user" title="<?= htmlspecialchars($_SESSION['user_name'] ?? 'U') ?>">
+        <?= strtoupper(substr($_SESSION['user_name'] ?? 'A', 0, 1)) ?>
+    </div>
+</div>
+
+<!-- ===== OVERLAY BACKDROP MOBILE ===== -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarMobile()"></div>
 
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar" id="sidebar">
@@ -1626,6 +1760,17 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
         </a>
     </div>
 </div>
+
+<script>
+function toggleSidebarMobile() {
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (sidebar && backdrop) {
+        sidebar.classList.toggle('show');
+        backdrop.classList.toggle('show');
+    }
+}
+</script>
 
 <!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
