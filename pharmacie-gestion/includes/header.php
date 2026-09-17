@@ -1656,16 +1656,39 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             .main-content {
                 margin-left: 0 !important;
                 padding-top: 75px !important;
-                padding-left: 14px !important;
-                padding-right: 14px !important;
+                padding-left: 12px !important;
+                padding-right: 12px !important;
             }
             .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 12px !important;
+                text-align: center;
+                padding: 15px !important;
+            }
+            .page-header > div {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
             }
             .sidebar-toggle {
                 display: none !important;
+            }
+            .stat-card {
+                margin-bottom: 10px;
+            }
+            .widget-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                text-align: center;
+            }
+            .widget-header > div {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
             }
         }
 
@@ -1676,15 +1699,32 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
                 font-size: 16px !important;
             }
             .stat-card {
-                padding: 12px 14px;
+                padding: 10px 12px;
             }
             .stat-card .stat-number {
-                font-size: 20px;
+                font-size: 18px;
+            }
+            .stat-card .stat-label {
+                font-size: 10px;
             }
             .table-responsive {
                 -webkit-overflow-scrolling: touch;
                 border-radius: 8px;
+                margin-bottom: 10px;
             }
+            /* Adaptation du Panier & POS sur mobile (pages/ventes.php) */
+            .cart-items {
+                max-height: 220px;
+            }
+            .total-box {
+                flex-direction: column;
+                text-align: center;
+                gap: 6px;
+            }
+            .total-box .total-amount {
+                font-size: 22px;
+            }
+            /* Cartes clients (pages/clients.php) */
             .client-card {
                 flex-direction: column;
                 align-items: stretch;
@@ -1694,6 +1734,21 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
                 margin: 0 auto 8px auto;
             }
             .client-card .client-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            /* Modals sur écran mobile */
+            .modal-dialog {
+                margin: 8px;
+                max-width: calc(100% - 16px);
+            }
+            .modal-body {
+                padding: 15px;
+            }
+            .btn {
+                min-height: 42px;
+                display: inline-flex;
+                align-items: center;
                 justify-content: center;
             }
         }
