@@ -1,0 +1,32 @@
+{
+  "name": "Pharmacie Souley-Guirou",
+  "short_name": "Souley-Guirou",
+  "description": "Système de Gestion de Pharmacie Intégré & Caisse POS",
+  "start_url": "index.php",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1b5e20",
+  "theme_color": "#1b5e20",
+  "categories": ["medical", "business", "productivity"],
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

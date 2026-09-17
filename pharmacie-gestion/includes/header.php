@@ -17,8 +17,13 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title><?= $page_title ?? 'Pharmacie Souley-Guirou' ?></title>
+    <link rel="manifest" href="<?= $root_path ?>manifest.json">
     <link rel="icon" type="image/png" href="<?= $root_path ?>assets/images/logo.png">
     <link rel="apple-touch-icon" href="<?= $root_path ?>assets/images/logo.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Souley-Guirou">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <?php if (isset($include_chart) && $include_chart): ?>
@@ -1869,6 +1874,59 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
                 justify-content: center;
             }
         }
+
+        /* ===== BANNIÈRE D'INSTALLATION PWA ===== */
+        .pwa-install-banner {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            z-index: 1090;
+            background: #ffffff;
+            border-left: 5px solid #1b5e20;
+            border-radius: 14px;
+            padding: 12px 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            max-width: 450px;
+            width: calc(100% - 30px);
+            animation: pwaSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes pwaSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pwa-install-banner .pwa-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid #eef0f5;
+        }
+
+        .pwa-install-banner .title {
+            font-size: 13px;
+            color: #1b5e20;
+            line-height: 1.2;
+        }
+
+        .pwa-install-banner .subtitle {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        @media (max-width: 576px) {
+            .pwa-install-banner {
+                bottom: 70px;
+                left: 15px;
+                right: 15px;
+                width: calc(100% - 30px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1959,6 +2017,25 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
     </div>
 </div>
 
+<!-- ===== BANNIÈRE D'INSTALLATION PWA NATIVE ===== -->
+<div id="pwaInstallBanner" class="pwa-install-banner" style="display: none;">
+    <div class="d-flex align-items-center gap-3">
+        <img src="<?= $root_path ?>assets/images/logo.png" alt="App Logo" class="pwa-logo">
+        <div>
+            <div class="fw-bold title">Pharmacie Souley-Guirou</div>
+            <div class="subtitle">Installer l'application sur votre écran d'accueil</div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
+        <button id="pwaInstallBtn" class="btn btn-success btn-sm fw-bold shadow-sm">
+            <i class="fas fa-download me-1"></i> Installer
+        </button>
+        <button onclick="dismissPwaBanner()" class="btn btn-outline-secondary btn-sm border-0">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
 <script>
 function toggleSidebarMobile() {
     const sidebar = document.getElementById('sidebar');
@@ -1967,6 +2044,44 @@ function toggleSidebarMobile() {
         sidebar.classList.toggle('show');
         backdrop.classList.toggle('show');
     }
+}
+
+// ===== ENREGISTREMENT SERVICE WORKER PWA =====
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('<?= $root_path ?>sw.js')
+            .then(reg => console.log('✅ PWA Service Worker actif sur :', reg.scope))
+            .catch(err => console.log('⚠️ Erreur Service Worker :', err));
+    });
+}
+
+// ===== GESTION DE LA BANNIÈRE D'INSTALLATION PWA =====
+let deferredPwaPrompt;
+const pwaBanner = document.getElementById('pwaInstallBanner');
+const pwaBtn = document.getElementById('pwaInstallBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPwaPrompt = e;
+    if (pwaBanner && !localStorage.getItem('pwa_dismissed')) {
+        pwaBanner.style.display = 'flex';
+    }
+});
+
+if (pwaBtn) {
+    pwaBtn.addEventListener('click', async () => {
+        if (!deferredPwaPrompt) return;
+        deferredPwaPrompt.prompt();
+        const { outcome } = await deferredPwaPrompt.userChoice;
+        console.log('Résultat installation PWA :', outcome);
+        deferredPwaPrompt = null;
+        if (pwaBanner) pwaBanner.style.display = 'none';
+    });
+}
+
+function dismissPwaBanner() {
+    if (pwaBanner) pwaBanner.style.display = 'none';
+    localStorage.setItem('pwa_dismissed', 'true');
 }
 </script>
 
