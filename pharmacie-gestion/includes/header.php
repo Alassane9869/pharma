@@ -1561,62 +1561,82 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
         }
 
         /* ===== ULTRA-RESPONSIVE MOBILE & TABLET (Android & iOS) ===== */
-        -webkit-tap-highlight-color: transparent;
-        -webkit-overflow-scrolling: touch;
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        /* Mobile Topbar fixed */
+        /* Mobile Topbar fixed (Ultra-Pro Glassmorphism) */
         .mobile-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: #ffffff;
-            border-bottom: 1px solid #eef0f5;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            z-index: 999;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 64px !important;
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.95) 0%, rgba(46, 125, 50, 0.95) 100%) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 16px !important;
+            z-index: 1040 !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
         }
 
         .mobile-navbar .btn-mobile-toggle {
-            background: #f0f4f0;
-            border: none;
-            color: #1b5e20;
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            color: #ffffff !important;
+            width: 42px !important;
+            height: 42px !important;
+            border-radius: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 19px !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
         }
 
         .mobile-navbar .btn-mobile-toggle:active {
-            transform: scale(0.92);
+            transform: scale(0.92) !important;
+            background: rgba(255, 255, 255, 0.3) !important;
         }
 
         .mobile-navbar .mobile-brand {
-            font-weight: 700;
-            font-size: 15px;
-            color: #1b5e20;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            color: #ffffff !important;
+            letter-spacing: 0.3px !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .mobile-navbar .mobile-brand img {
+            height: 34px !important;
+            width: 34px !important;
+            border-radius: 9px !important;
+            margin-right: 10px !important;
+            object-fit: cover !important;
+            border: 2px solid rgba(255, 255, 255, 0.35) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
         }
 
         .mobile-navbar .mobile-user {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #e8f5e9;
-            color: #1b5e20;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+            color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 700 !important;
+            font-size: 15px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
         }
 
         /* Sidebar Backdrop */
