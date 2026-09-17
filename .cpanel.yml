@@ -1,7 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/$USER/Souley-Guirou.danayaplus.com
-    - if [ ! -d "$DEPLOYPATH" ]; then export DEPLOYPATH=/home/$USER/public_html; fi
-    - /bin/cp -R * $DEPLOYPATH
-    - /bin/chmod 755 $DEPLOYPATH/pharmacie-gestion 2>/dev/null || true
+    - export DEPLOYPATH=/home/vuxe8870/Souley-Guirou.danayaplus.com
+    - /bin/cp -a . $DEPLOYPATH/
+    - /bin/chmod -R 755 $DEPLOYPATH/pharmacie-gestion 2>/dev/null || true
