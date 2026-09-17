@@ -2,5 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/vuxe8870/Souley-Guirou.danayaplus.com
-    - /bin/cp -a . $DEPLOYPATH/
+    - /usr/bin/rsync -a --exclude='.git' . $DEPLOYPATH/
+    - /bin/chmod 644 $DEPLOYPATH/.htaccess 2>/dev/null || true
+    - /bin/chmod 644 $DEPLOYPATH/pharmacie-gestion/.htaccess 2>/dev/null || true
     - /bin/chmod -R 755 $DEPLOYPATH/pharmacie-gestion 2>/dev/null || true

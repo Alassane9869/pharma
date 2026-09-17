@@ -13,12 +13,12 @@ cd "$REPO_DIR" || exit 1
 git fetch --all
 git reset --hard origin/main
 
-# 2. Copie vers la racine Web
-echo "📁 2. Copie des fichiers vers $WEB_DIR..."
-cp -a "$REPO_DIR/." "$WEB_DIR/"
+# 2. Copie propre des fichiers (sans le dossier .git)
+echo "📁 2. Synchronisation des fichiers vers $WEB_DIR..."
+rsync -a --exclude='.git' "$REPO_DIR/" "$WEB_DIR/"
 
 # 3. Correction des permissions (Dossiers 755, Fichiers .htaccess & PHP 644)
-echo "🔒 3. Normalisation des permissions o2switch (Dossiers 755, Fichiers 644)..."
+echo "🔒 3. Normalisation des permissions o2switch..."
 chmod 755 "$WEB_DIR" 2>/dev/null || true
 find "$WEB_DIR" -type d -exec chmod 755 {} + 2>/dev/null || true
 find "$WEB_DIR" -type f -exec chmod 644 {} + 2>/dev/null || true
