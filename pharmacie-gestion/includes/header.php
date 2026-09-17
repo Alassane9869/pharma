@@ -17,7 +17,7 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title><?= $page_title ?? 'Pharmacie Souley-Guirou' ?></title>
-    <link rel="icon" type="image/x-icon" href="<?= $root_path ?>assets/images/favicon.ico">
+    <link rel="icon" type="image/png" href="<?= $root_path ?>assets/images/logo.png">
     <link rel="apple-touch-icon" href="<?= $root_path ?>assets/images/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
