@@ -1639,24 +1639,106 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
         }
 
-        /* Sidebar Backdrop */
+        /* Sidebar Backdrop (Net sans flou agressif) */
         .sidebar-backdrop {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 1040;
             display: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s ease;
         }
 
         .sidebar-backdrop.show {
             display: block;
             opacity: 1;
+        }
+
+        /* ===== BARRE DE NAVIGATION INFÉRIEURE MOBILE (PRO BOTTOM TAB BAR) ===== */
+        .mobile-bottom-nav {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 62px !important;
+            background: #ffffff !important;
+            border-top: 1px solid #e2e8f0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-around !important;
+            z-index: 1030 !important;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08) !important;
+            padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 5px 0;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item i {
+            font-size: 18px;
+            margin-bottom: 2px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.active {
+            color: #1b5e20;
+            font-weight: 700;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.active i {
+            transform: translateY(-2px);
+            color: #2e7d32;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.highlight-btn {
+            position: relative;
+            top: -12px;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.highlight-btn .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(27, 94, 32, 0.35);
+            border: 3px solid #ffffff;
+            transition: transform 0.2s ease;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.highlight-btn:active .icon-box {
+            transform: scale(0.92);
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.highlight-btn i {
+            font-size: 20px;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .mobile-bottom-nav .bottom-nav-item.highlight-btn span {
+            font-size: 10px;
+            margin-top: 2px;
+            color: #1b5e20;
+            font-weight: 700;
         }
 
         /* Drawer Sidebar (Tablets & Mobile < 992px) */
@@ -1678,6 +1760,7 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             .main-content {
                 margin-left: 0 !important;
                 padding-top: 75px !important;
+                padding-bottom: 85px !important;
                 padding-left: 12px !important;
                 padding-right: 12px !important;
             }
@@ -1792,8 +1875,33 @@ $root_path = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
     </div>
 </div>
 
-<!-- ===== OVERLAY BACKDROP MOBILE ===== -->
+<!-- ===== OVERLAY BACKDROP MOBILE (Transparent sans flou) ===== -->
 <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebarMobile()"></div>
+
+<!-- ===== BARRE DE NAVIGATION INFÉRIEURE MOBILE (PRO BOTTOM TAB BAR) ===== -->
+<div class="mobile-bottom-nav d-lg-none">
+    <?php $current_script = basename($_SERVER['PHP_SELF']); ?>
+    <a href="<?= $root_path ?>index.php" class="bottom-nav-item <?= ($current_script == 'index.php') ? 'active' : '' ?>">
+        <i class="fas fa-home"></i>
+        <span>Accueil</span>
+    </a>
+    <a href="<?= $root_path ?>pages/medicaments.php" class="bottom-nav-item <?= ($current_script == 'medicaments.php') ? 'active' : '' ?>">
+        <i class="fas fa-pills"></i>
+        <span>Stocks</span>
+    </a>
+    <a href="<?= $root_path ?>pages/ventes.php" class="bottom-nav-item highlight-btn <?= ($current_script == 'ventes.php') ? 'active' : '' ?>">
+        <div class="icon-box"><i class="fas fa-shopping-cart"></i></div>
+        <span>Caisse POS</span>
+    </a>
+    <a href="<?= $root_path ?>pages/factures.php" class="bottom-nav-item <?= ($current_script == 'factures.php') ? 'active' : '' ?>">
+        <i class="fas fa-receipt"></i>
+        <span>Factures</span>
+    </a>
+    <a href="javascript:void(0)" onclick="toggleSidebarMobile()" class="bottom-nav-item">
+        <i class="fas fa-bars"></i>
+        <span>Plus</span>
+    </a>
+</div>
 
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar" id="sidebar">
