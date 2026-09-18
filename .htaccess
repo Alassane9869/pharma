@@ -7,7 +7,9 @@
     RewriteEngine On
     RewriteBase /
 
-    # Redirection automatique vers la racine de l'application
+    # Redirection automatique EXCLUSIVE au sous-domaine souley-guirou
+    # NE JAMAIS REDIRIGER LE DOMAINE PRINCIPAL danayaplus.com
+    RewriteCond %{HTTP_HOST} ^(www\.)?souley-guirou\.danayaplus\.com$ [NC]
     RewriteCond %{REQUEST_URI} !^/pharmacie-gestion/
-    RewriteRule ^$ pharmacie-gestion/ [L,R=301]
+    RewriteRule ^$ pharmacie-gestion/ [L,R=302]
 </IfModule>
